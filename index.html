@@ -1,23 +1,37 @@
+@app.route("/")
+def home():
+    print('Log: Exibindo index.html')
+    return render_template('index.html')
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Previsão de Produto</title>
+    <title>Previsão de Chuva</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <h1>Previsão de Produto</h1>
+    <h1>Previsão de Chuva</h1>
     <form id="predict-form">
-        <label for="user_id">ID do Usuário:</label>
-        <input type="number" id="user_id" required>
+        <label for="latitude">Latitude:</label>
+        <input type="number" id="latitude" step="any" required>
         <br>
-        <label for="valor_compra">Valor da Compra:</label>
-        <input type="number" id="valor_compra" required>
+        <label for="longitude">Longitude:</label>
+        <input type="number" id="longitude" step="any" required>
         <br>
-        <button type="submit">Prever Categoria</button>
+        <label for="temperature">Temperatura:</label>
+        <input type="number" id="temperature" required>
+        <br>
+        <label for="humidity">Umidade:</label>
+        <input type="number" id="humidity" required>
+        <br>
+        <label for="wind_speed">Velocidade do Vento:</label>
+        <input type="number" id="wind_speed" required>
+        <br>
+        <button type="submit">Prever Chuva</button>
     </form>
-    <h2>Categoria Recomendada: <span id="result"></span></h2>
+    <h2>Resultado da Previsão: <span id="result"></span></h2>
 
     <script>
         $(document).ready(function () {
@@ -25,18 +39,27 @@
                 event.preventDefault(); // Previne o comportamento padrão do formulário
 
                 // Captura os dados do formulário
-                const user_id = $("#user_id").val();
-                const valor_compra = $("#valor_compra").val();
+                const latitude = $("#latitude").val();
+                const longitude = $("#longitude").val();
+                const temperature = $("#temperature").val();
+                const humidity = $("#humidity").val();
+                const wind_speed = $("#wind_speed").val();
 
                 // Fazendo a requisição POST para a API Flask
                 $.ajax({
-                    url: "http://127.0.0.1:5000/predict",
+                    url: "http://127.0.0.1:5000/predict",  // URL da sua API Flask
                     type: "POST",
                     contentType: "application/json",
-                    data: JSON.stringify({ user_id: user_id, valor_compra: valor_compra }),
+                    data: JSON.stringify({
+                        latitude: latitude,
+                        longitude: longitude,
+                        temperature: temperature,
+                        humidity: humidity,
+                        wind_speed: wind_speed
+                    }),
                     success: function (data) {
                         // Exibe o resultado na página
-                        $("#result").text(data.categoria_recomendada);
+                        $("#result").text(data.result);
                     },
                     error: function (xhr, status, error) {
                         console.error(error);
