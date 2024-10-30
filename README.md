@@ -1,5 +1,5 @@
 # API_Flask
-# Vendas de Pirozhki - CASE (regressão linear)
+
 ## Sumário
 - [1. Descrição](Description)
 - [2. Versão](Version)
